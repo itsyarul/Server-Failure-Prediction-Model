@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ServerGuard AI — Real-time server failure prediction dashboard for DevOps and system administrators. Monitor server health metrics and predict failures with ML-powered analysis.">
+  <title>ServerGuard AI — Server Failure Prediction Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Subtle animated background grid -->
+  <div class="bg-grid"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-left">
+      <div class="logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="2" width="24" height="24" rx="6" stroke="url(#lg1)" stroke-width="2.5"/>
+          <circle cx="14" cy="14" r="5" fill="url(#lg1)"/>
+          <circle cx="14" cy="14" r="2" fill="#fff"/>
+          <defs><linearGradient id="lg1" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#4F6EF7"/><stop offset="1" stop-color="#14B8A6"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">ServerGuard <span class="logo-ai">AI</span></span>
+    </div>
+    <div class="topbar-center">
+      <span class="breadcrumb">Dashboard</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb active">Failure Prediction</span>
+    </div>
+    <div class="topbar-right">
+      <div class="status-dot online"></div>
+      <span class="status-label">System Online</span>
+      <span class="topbar-time" id="topbar-time"></span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-grid">
+    <!-- LEFT COLUMN: Server Metrics Input Panel -->
+    <section class="panel metrics-panel" id="metrics-panel">
+      <div class="panel-header">
+        <div class="panel-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="3" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="20" x2="15" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="17" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" fill="currentColor"/></svg>
+        </div>
+        <h2 class="panel-title">Server Metrics</h2>
+        <span class="panel-badge">10 Parameters</span>
+      </div>
+      <p class="panel-subtitle">Adjust each metric to simulate server conditions</p>
+
+      <div class="sliders-grid" id="sliders-container">
+        <!-- Sliders injected by JS -->
+      </div>
+
+      <div class="panel-actions">
+        <button class="btn btn-secondary" id="btn-randomize" title="Randomize all metrics">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 10.5A5.5 5.5 0 0 1 7.5 5h4.379l-1.94-1.94a.75.75 0 0 1 1.061-1.06l3.22 3.22a.75.75 0 0 1 0 1.06l-3.22 3.22a.75.75 0 1 1-1.06-1.06L11.878 6.5H7.5A4.5 4.5 0 0 0 3 10.5a.5.5 0 0 1-1 0z" fill="currentColor"/></svg>
+          Randomize
+        </button>
+        <button class="btn btn-secondary" id="btn-healthy" title="Set healthy server values">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.314C3.562-1.627-.5 4.322.5 7.761 2 12.5 8 15 8 15s6-2.5 7.5-7.239C16.5 4.322 12.438-1.627 8 1.314z" fill="currentColor"/></svg>
+          Healthy
+        </button>
+        <button class="btn btn-danger-outline" id="btn-critical" title="Set critical server values">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.71c.89 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="currentColor"/></svg>
+          Critical
+        </button>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: Prediction Output -->
+    <section class="output-column">
+      <!-- Circular Gauge Card -->
+      <div class="panel gauge-panel" id="gauge-panel">
+        <div class="panel-header">
+          <div class="panel-icon pulse">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 1 0 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 6v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h2 class="panel-title">Failure Probability</h2>
+          <span class="panel-badge live-badge"><span class="live-dot"></span>LIVE</span>
+        </div>
+
+        <div class="gauge-wrapper">
+          <svg class="gauge-svg" viewBox="0 0 200 200" id="gauge-svg">
+            <!-- Background track -->
+            <circle class="gauge-track" cx="100" cy="100" r="85" />
+            <!-- Colored arc -->
+            <circle class="gauge-fill" cx="100" cy="100" r="85" id="gauge-fill" />
+            <!-- Inner glow circle -->
+            <circle class="gauge-inner-glow" cx="100" cy="100" r="65" id="gauge-inner-glow"/>
+          </svg>
+          <div class="gauge-center">
+            <span class="gauge-value" id="gauge-value">0</span>
+            <span class="gauge-unit">%</span>
+            <span class="gauge-label">Failure Risk</span>
+          </div>
+        </div>
+
+        <!-- Risk Level Badge -->
+        <div class="risk-badge-container">
+          <div class="risk-badge" id="risk-badge">
+            <span class="risk-icon" id="risk-icon"></span>
+            <span class="risk-text" id="risk-text">LOW</span>
+          </div>
+          <p class="risk-action" id="risk-action">Monitor normally</p>
+        </div>
+      </div>
+
+      <!-- Threshold Alerts Card -->
+      <div class="panel alerts-panel" id="alerts-panel">
+        <div class="panel-header">
+          <div class="panel-icon warning-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l8 14H2L10 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><line x1="10" y1="8" x2="10" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="14.5" r="0.8" fill="currentColor"/></svg>
+          </div>
+          <h2 class="panel-title">Threshold Alerts</h2>
+          <span class="alert-count-badge" id="alert-count-badge">0</span>
+        </div>
+        <div class="alerts-list" id="alerts-list">
+          <div class="alert-empty">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M14 20l4 4 8-8" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>All metrics within safe thresholds</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Engineered Features Card -->
+      <div class="panel features-panel" id="features-panel">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 0 0 .95.69h4.162c.969 0 1.372 1.24.587 1.81l-3.37 2.448a1 1 0 0 0-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.539 1.118l-3.37-2.448a1 1 0 0 0-1.176 0l-3.37 2.448c-.783.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 0 0-.364-1.118L2.064 9.384c-.784-.57-.381-1.81.588-1.81h4.162a1 1 0 0 0 .95-.69l1.285-3.957z" stroke="currentColor" stroke-width="1.3"/></svg>
+          </div>
+          <h2 class="panel-title">Engineered Features</h2>
+        </div>
+        <div class="features-grid" id="features-grid">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>ServerGuard AI v2.0 — Logistic Regression Model</span>
+    <span class="footer-sep">•</span>
+    <span>Prediction Engine Active</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
